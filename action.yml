@@ -26,22 +26,22 @@ runs:
     - uses: actions/checkout@v2
     - name: Install Python packages
       run: |
-         constraints="-c "
+         touch constraints.tmp
          if [ -n "${{ inputs.constraints }}" ]; then
           if [ -f "${{ inputs.constraints }}" ]; then
-            constraints+="${{ inputs.constraints }}"
+            cat ${{ inputs.constraints }} > constraints.tmp
           else
             for file in ${{ inputs.constraints }}; do
-              constraints+="$file "
+              echo $file >> constraints.tmp
             done
           fi
           fi
           if [ -n "${{ inputs.requirements }}" ]; then
             if [ -f "${{ inputs.requirements }}" ]; then
-              pip install -r "${{ inputs.requirements }}" $constraints
+              pip install -r "${{ inputs.requirements }}" -c constraints.tmp
             else
               for package in ${{ inputs.requirements }}; do
-                pip install "$package" $constraints
+                pip install "$package" -c constraints.tmp
               done
             fi
           fi
