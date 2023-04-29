@@ -26,13 +26,13 @@ runs:
     - uses: actions/checkout@v2
     - name: Install Python packages
       run: |
-         constraints = "-c "
+         constraints="-c "
          if [ -n "${{ inputs.constraints }}" ]; then
           if [ -f "${{ inputs.constraints }}" ]; then
-            constraints = "${{ inputs.constraints }}"
+            constraints+="${{ inputs.constraints }}"
           else
             for file in ${{ inputs.constraints }}; do
-              constraints += "$file "
+              constraints+="$file "
             done
           fi
           fi
