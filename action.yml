@@ -1,0 +1,45 @@
+name: 'Python script execution'
+description: 'Execute a given python script with its dependencies and show the output'
+inputs:
+  script:
+    description: 'The python script with to execute'
+    required: true
+  args:
+    description: 'The arguments to pass to the script'
+    required: false
+  python-version:
+    description: 'The python version to use'
+    required: false
+  requirements:
+    description: 'File path or list of Python package requirements'
+    required: true
+  constraints:
+    description: 'File path or list of Python package constraints'
+    required: false
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: 'pip'
+    - uses: actions/checkout@v2
+    - name: Install Python packages
+      run: |
+        {% if typeof inputs.constraints == 'string' %}
+        pip install -c ${{ inputs.constraints }}
+        {% else %}
+        {% for constraint in inputs.constraints %}
+        pip install -c {{ constraint }}
+        {% endfor %}
+        {% endif %}
+        {% if typeof inputs.requirements == 'string' %}
+        pip install -r ${{ inputs.requirements }}
+        {% else %}
+        pip install {% for package in inputs.requirements %}{{ package }} {% endfor %}
+        {% endif %}
+      shell: bash
+    - name: Execute Python script
+      run: |
+        python ${{ inputs.script }} {% for key, value in inputs.args.items() %} {{ key }}='{{ value }}' {% endfor %}
+      shell: bash
