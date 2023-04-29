@@ -28,6 +28,7 @@ jobs:
         with:
           python-version: ${{ github.event.inputs.python_version }}
           requirements: ${{ github.event.inputs.requirements }}
-          constraints: ${{ github.event.inputs.constraints }}
+          constraints:
+            requests==2.26.0
           script: ${{ github.event.inputs.script }}
           args: ${{ github.event.inputs.args }}
