@@ -26,20 +26,26 @@ runs:
     - uses: actions/checkout@v2
     - name: Install Python packages
       run: |
-        {% if typeof inputs.constraints == 'string' %}
-        pip install -c ${{ inputs.constraints }}
-        {% else %}
-        {% for constraint in inputs.constraints %}
-        pip install -c {{ constraint }}
-        {% endfor %}
-        {% endif %}
-        {% if typeof inputs.requirements == 'string' %}
-        pip install -r ${{ inputs.requirements }}
-        {% else %}
-        pip install {% for package in inputs.requirements %}{{ package }} {% endfor %}
-        {% endif %}
+         if [ -n "${{ inputs.constraints }}" ]; then
+          if [ -f "${{ inputs.constraints }}" ]; then
+            pip install -c "${{ inputs.constraints }}"
+          else
+            for file in ${{ inputs.constraints }}; do
+              pip install -c "$file"
+            done
+          fi
+          fi
+          if [ -n "${{ inputs.requirements }}" ]; then
+            if [ -f "${{ inputs.requirements }}" ]; then
+              pip install -r "${{ inputs.requirements }}"
+            else
+              for package in ${{ inputs.requirements }}; do
+                pip install "$package"
+              done
+            fi
+          fi
       shell: bash
     - name: Execute Python script
       run: |
-        python ${{ inputs.script }} {% for key, value in inputs.args.items() %} {{ key }}='{{ value }}' {% endfor %}
+        python ${{ inputs.script }} ${{ inputs.args }}
       shell: bash
