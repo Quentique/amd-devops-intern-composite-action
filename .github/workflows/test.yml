@@ -18,12 +18,13 @@ on:
         description: 'Arguments to pass to the script'
         required: false
 jobs:
-  build:
+  execute:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run Python Package Install and Script Execution composite action
+        id: script-execution
         uses: Quentique/amd-devops-intern-composite-action@e2c834a8e88baca54db16af73e0141371b23626e
         with:
           python-version: ${{ github.event.inputs.python_version }}
@@ -31,3 +32,5 @@ jobs:
           constraints: ${{ github.event.inputs.constraints }}
           script: ${{ github.event.inputs.script }}
           args: ${{ github.event.inputs.args }}
+    outputs:
+        script-output: ${{ steps.script-execution.outputs.output }}

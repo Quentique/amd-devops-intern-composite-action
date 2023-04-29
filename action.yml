@@ -16,6 +16,10 @@ inputs:
   constraints:
     description: 'File path or list of Python package constraints'
     required: false
+outputs: 
+  output:
+    description: 'The output of the script'
+    value: ${{ steps.script-execution.outputs.OUTPUT }}
 runs:
   using: 'composite'
   steps:
@@ -47,6 +51,9 @@ runs:
           fi
       shell: bash
     - name: Execute Python script
-      run: |
-        python ${{ inputs.script }} ${{ inputs.args }}
+      id: script-execution
+      run: echo "OUTPUT=$(python ${{ inputs.script }} ${{ inputs.args }})" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Print script output
+      run: echo "${{ steps.script-execution.outputs.stdout }}"
       shell: bash
