@@ -1,0 +1,33 @@
+name: Python Package Install and Script Execution
+on:
+  workflow_dispatch:
+    inputs:
+      python_version:
+        description: 'Python version to use'
+        required: true
+      requirements:
+        description: 'File path or list of Python package requirements'
+        required: true
+      constraints:
+        description: 'File path or list of Python package constraints'
+        required: false
+      script:
+        description: 'File path of the script to execute'
+        required: true
+      args:
+        description: 'Arguments to pass to the script'
+        required: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Run Python Package Install and Script Execution composite action
+        uses: .
+        with:
+          python-version: ${{ github.event.inputs.python_version }}
+          requirements: ${{ github.event.inputs.requirements }}
+          constraints: ${{ github.event.inputs.constraints }}
+          script: ${{ github.event.inputs.script }}
+          args: ${{ github.event.inputs.args }}
