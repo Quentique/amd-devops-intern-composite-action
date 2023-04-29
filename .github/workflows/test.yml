@@ -24,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run Python Package Install and Script Execution composite action
-        uses: Quentique/amd-devops-intern-composite-action@5e633888c79d54c4e063cbb48d2435e9a1ea3578
+        uses: Quentique/amd-devops-intern-composite-action@55d9f62cf34158a9ef6b3ba8492076e4a1941571
         with:
           python-version: ${{ github.event.inputs.python_version }}
           requirements: ${{ github.event.inputs.requirements }}
