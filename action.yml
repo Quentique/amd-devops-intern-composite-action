@@ -55,5 +55,5 @@ runs:
       run: echo "OUTPUT=$(python ${{ inputs.script }} ${{ inputs.args }})" >> $GITHUB_OUTPUT
       shell: bash
     - name: Print script output
-      run: echo "${{ steps.script-execution.outputs.stdout }}"
+      run: echo "${{ steps.script-execution.outputs.OUTPUT }}"
       shell: bash
