@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Python Package Install and Script Execution composite action
         id: script-execution
         uses: Quentique/amd-devops-intern-composite-action@c61d9807eb7380a592d8b04777d6d1fc7c879a4e
