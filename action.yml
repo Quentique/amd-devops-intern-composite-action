@@ -9,10 +9,10 @@ inputs:
     required: false
   python-version:
     description: 'The python version to use'
-    required: false
+    required: true
   requirements:
     description: 'File path or list of Python package requirements'
-    required: true
+    required: false
   constraints:
     description: 'File path or list of Python package constraints'
     required: false
